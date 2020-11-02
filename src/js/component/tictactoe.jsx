@@ -1,17 +1,47 @@
-import React from "react";
+import React, { useState, Fragment } from "react";
 
 import PropTypes from "prop-types";
 
 const Square = props => {
-	return <button clasNAme="square">{props.value}</button>;
+	return (
+		<button className="square" onClick={props.onClick}>
+			{props.value}
+		</button>
+	);
 };
 
 const Grid = () => {
-	let renderSquare = i => {
-		return <Square value={i} />;
+	const [squares, setSquares] = useState(Array(9).fill(null));
+	const [squaresCopy] = useState([]);
+	const [player, setPlayerNext] = useState(true);
+	const [turn, setTurn] = useState(" X");
+	let XandOSettingFunction = i => {
+		if (squares[i] == null) {
+			setSquares(squares.slice());
+			if (player == true) {
+				squaresCopy[i] = "X";
+				setSquares(squaresCopy);
+				setPlayerNext(false);
+				setTurn(" O");
+			} else {
+				squaresCopy[i] = "O";
+				setSquares(squaresCopy);
+				setPlayerNext(true);
+				setTurn(" X");
+			}
+		}
 	};
-
-	const status = "Next player: X";
+	let renderSquare = i => {
+		return (
+			<Square
+				value={squares[i]}
+				onClick={() => {
+					XandOSettingFunction(i);
+				}}
+			/>
+		);
+	};
+	let status = "Next player:" + turn;
 	return (
 		<div>
 			<div className="status">{status}</div>
@@ -33,7 +63,6 @@ const Grid = () => {
 		</div>
 	);
 };
-
 export const Game = () => {
 	return (
 		<div className="game">
@@ -41,13 +70,13 @@ export const Game = () => {
 				<Grid />
 			</div>
 			<div>
-				<div>{/* status */}</div>
-				<ol>{/* todo */}</ol>
+				<div>{/*status*/}</div>
+				{/* <ol>{ todo }</ol> */}
 			</div>
 		</div>
 	);
 };
-
 Square.propTypes = {
-	value: PropTypes.number
+	value: PropTypes.string,
+	onClick: PropTypes.func
 };
