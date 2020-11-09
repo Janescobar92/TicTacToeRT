@@ -1,82 +1,77 @@
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 
 import PropTypes from "prop-types";
 
-const Square = props => {
+const Square = props => (
+	<button className="cell-board-game" onClick={props.onClick}>
+		{props.value}
+	</button>
+);
+
+const Board = ({ squares, onClick }) => (
+	<div className="grid-board-game">
+		{squares.map((square, i) => (
+			<Square key={i} value={square} onClick={() => onClick(i)} />
+		))}
+	</div>
+);
+export const Game = () => {
+	const [board, setBoard] = useState(Array(9).fill(null));
+	const [turn, setTurn] = useState(true);
+	const winner = calculateWinner(board);
+
+	const handleClick = i => {
+		const boardCopy = [...board];
+		if (winner || boardCopy[i]) return;
+		boardCopy[i] = turn ? "X" : "O";
+		setBoard(boardCopy);
+		setTurn(!turn);
+	};
+
+	const renderMoves = () => (
+		<button onClick={() => setBoard(Array(9).fill(null))}>Restart</button>
+	);
+
 	return (
-		<button className="square" onClick={props.onClick}>
-			{props.value}
-		</button>
+		<>
+			<Board squares={board} onClick={handleClick} />
+			<div className="game-styling">
+				<p>
+					{winner
+						? "Winner: " + winner
+						: "Next Player: " + (turn ? "X" : "O")}
+				</p>
+				{renderMoves()}
+			</div>
+		</>
 	);
 };
 
-const Grid = () => {
-	const [squares, setSquares] = useState(Array(9).fill(null));
-	const [squaresCopy] = useState([]);
-	const [player, setPlayerNext] = useState(true);
-	const [turn, setTurn] = useState(" X");
-	let XandOSettingFunction = i => {
-		if (squares[i] == null) {
-			setSquares(squares.slice());
-			if (player == true) {
-				squaresCopy[i] = "X";
-				setSquares(squaresCopy);
-				setPlayerNext(false);
-				setTurn(" O");
-			} else {
-				squaresCopy[i] = "O";
-				setSquares(squaresCopy);
-				setPlayerNext(true);
-				setTurn(" X");
-			}
+function calculateWinner(squares) {
+	const lines = [
+		[0, 1, 2],
+		[3, 4, 5],
+		[6, 7, 8],
+		[0, 3, 6],
+		[1, 4, 7],
+		[2, 5, 8],
+		[0, 4, 8],
+		[2, 4, 6]
+	];
+	for (let i = 0; i < lines.length; i++) {
+		const [a, b, c] = lines[i];
+		if (
+			squares[a] &&
+			squares[a] === squares[b] &&
+			squares[a] === squares[c]
+		) {
+			return squares[a];
 		}
-	};
-	let renderSquare = i => {
-		return (
-			<Square
-				value={squares[i]}
-				onClick={() => {
-					XandOSettingFunction(i);
-				}}
-			/>
-		);
-	};
-	let status = "Next player:" + turn;
-	return (
-		<div>
-			<div className="status">{status}</div>
-			<div className="board-row">
-				{renderSquare(0)}
-				{renderSquare(1)}
-				{renderSquare(2)}
-			</div>
-			<div className="board-row">
-				{renderSquare(3)}
-				{renderSquare(4)}
-				{renderSquare(5)}
-			</div>
-			<div className="board-row">
-				{renderSquare(6)}
-				{renderSquare(7)}
-				{renderSquare(8)}
-			</div>
-		</div>
-	);
-};
-export const Game = () => {
-	return (
-		<div className="game">
-			<div className="game-grid">
-				<Grid />
-			</div>
-			<div>
-				<div>{/*status*/}</div>
-				{/* <ol>{ todo }</ol> */}
-			</div>
-		</div>
-	);
-};
+	}
+	return null;
+}
 Square.propTypes = {
 	value: PropTypes.string,
+
 	onClick: PropTypes.func
 };

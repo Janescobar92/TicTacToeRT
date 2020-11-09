@@ -1,53 +1,30 @@
 @import "~bootstrap/scss/bootstrap.scss";
+@import url('https://fonts.googleapis.com/css2?family=Patrick+Hand&display=swap');
 
-body {
-  font: 14px "Century Gothic", Futura, sans-serif;
-  margin: 20px;
+.cell-board-game{
+    background: none;
+    border-radius: 3px;
+    width: 164px;
+    height: 166px;
+    outline: none;
+    color:rgba(255, 255, 255, 0.733);
+    font-size: 4rem;
+    font-family: 'Patrick Hand', cursive;
 }
-
-ol, ul {
-  padding-left: 30px;
+.grid-board-game{
+    display: flex;
+    flex-wrap: wrap;
+    border-radius: 10px;
+    width: 500px;
+    height: 500px;
+    margin: 0 auto;  
 }
-
-.board-row:after {
-  clear: both;
-  content: "";
-  display: table;
+.game-styling{
+    font-size: 2rem;
 }
-
-.status {
-  margin-bottom: 10px;
-}
-
-.square {
-  background: #fff;
-  border: 1px solid #999;
-  float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  width: 34px;
-  z-index: -1;
-}
-
-.square:focus {
-  outline: none;
-}
-
-.kbd-navigation .square:focus {
-  background: #ddd;
-}
-
-.game {
-  display: flex;
-  flex-direction: row;
-}
-
-.game-info {
-  margin-left: 20px;
+body{
+    background-image: url("https://images.pexels.com/photos/2675047/pexels-photo-2675047.jpeg?auto=compress&cs=tinysrgb&dpr=3&h=750&w=1260");
+    background-size: cover;
+    color:white;
+    font-family: 'Patrick Hand', cursive;
 }
